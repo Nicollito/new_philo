@@ -16,13 +16,20 @@ DEBUG_MODE =
 SRC 			= 									\
 						src
 SRC_DIR 		=									\
+						init						\
 						main						\
-						parsing
+						parsing						\
+						routine
+init_SRCS		=									\
+						init.c
 main_SRCS		=									\
-						main.c
-parsing_SRCS	=									\
-						parsing.c					\
+						main.c						\
 						utils.c
+parsing_SRCS	=									\
+						lib.c						\
+						parsing.c
+routine_SRCS	=									\
+						routine.c
 
 SRCS =	$(foreach dir,$(SRC_DIR), $(addprefix $(SRC)/$(dir)/,$($(dir)_SRCS)))
 #-----------------------------------OBJECTS-----------------------------------#
@@ -38,7 +45,7 @@ INCLUDE			=		 								\
 HEADER_DIR		=										\
 						parsing							\
 						philo
-parsing_HDR	=										\
+parsing_HDR	=											\
 						parsing.h
 philo_HDR		=										\
 						philo.h

@@ -6,7 +6,7 @@
 /*   By: nimadela <nimadela@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 13:44:30 by nimadela          #+#    #+#             */
-/*   Updated: 2025/09/08 17:00:24 by nimadela         ###   ########.fr       */
+/*   Updated: 2025/09/09 11:52:07 by nimadela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ static int	check_is_num(char **str)
 				return (1);
 			j++;
 		}
+		if (j == 0)
+			return (1);
 	}
 	return (0);
 }
@@ -55,7 +57,7 @@ static int	fill_data(int ac, char **av, t_data *data)
 			return (1);
 	}
 	else
-		data->num_of_eat = 0;
+		data->num_of_eat = -1;
 	return (0);
 }
 

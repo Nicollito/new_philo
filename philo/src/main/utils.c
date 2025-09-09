@@ -6,19 +6,20 @@
 /*   By: nimadela <nimadela@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 17:16:34 by nimadela          #+#    #+#             */
-/*   Updated: 2025/09/08 17:24:57 by nimadela         ###   ########.fr       */
+/*   Updated: 2025/09/08 19:10:06 by nimadela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 
-int	ft_msleep(int ms)
+int	ft_msleep(unsigned int ms)
 {
-	int	i;
-	
-	i = 10;
+	ms *= 100;
 	while (ms)
 	{
-		
+		if (usleep(10) == -1)
+			return (-1);
+		ms--;
 	}
+	return (0);
 }

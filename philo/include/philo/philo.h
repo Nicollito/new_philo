@@ -6,12 +6,14 @@
 /*   By: nimadela <nimadela@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 13:39:45 by nimadela          #+#    #+#             */
-/*   Updated: 2025/09/08 16:42:41 by nimadela         ###   ########.fr       */
+/*   Updated: 2025/09/09 11:51:35 by nimadela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_H
 # define PHILO_H
+
+# include <pthread.h>
 
 typedef struct data
 {
@@ -24,13 +26,25 @@ typedef struct data
 
 typedef struct philo
 {
-	int	name;
-	int	*fork;
-	int	*next_fork;
-}		t_philo;
+	int				num;
+	int				nbr_of_eat;
+	int				*fork;
+	int				*next_fork;
+	pthread_mutex_t	f_mutex;
+	pthread_mutex_t	*next_f_mutex;
+	pthread_mutex_t	*printf_mutex;
+}					t_philo;
+
+/* ----------------init----------------- */
+
+// init.c
+
+t_philo	*init_philo(t_data *data);
+
+/* ---------------parsing--------------- */
 
 // parsing.c
 
-int	parsing(int ac, char **av, t_data *data);
+int		parsing(int ac, char **av, t_data *data);
 
 #endif

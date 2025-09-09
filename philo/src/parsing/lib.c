@@ -6,7 +6,7 @@
 /*   By: nimadela <nimadela@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 14:03:57 by nimadela          #+#    #+#             */
-/*   Updated: 2025/09/08 16:50:06 by nimadela         ###   ########.fr       */
+/*   Updated: 2025/09/08 19:01:50 by nimadela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ int	ft_atoi(char *str)
 	i = 0;
 	res = 0;
 	tmp = 0;
+	if (str[i] == '+')
+		i++;
 	while (str[i])
 	{
 		tmp = res * 10 + (str[i] - '0');
