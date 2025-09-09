@@ -7,7 +7,8 @@ CC = cc
 CFLAGS = -Werror -Wextra -Wall
 CFLAGS += 											\
 						-Iinclude/parsing			\
-						-Iinclude/philo
+						-Iinclude/philo				\
+						-Iinclude/routine
 DFLAGS = -MMD -MF
 #------------------------------------DEBUG------------------------------------#
 CFLAGS_DEBUG = -g3 -Wuninitialized -fno-inline -O0
@@ -29,7 +30,9 @@ parsing_SRCS	=									\
 						lib.c						\
 						parsing.c
 routine_SRCS	=									\
-						routine.c
+						mutex.c						\
+						routine.c					\
+						timestamp.c
 
 SRCS =	$(foreach dir,$(SRC_DIR), $(addprefix $(SRC)/$(dir)/,$($(dir)_SRCS)))
 #-----------------------------------OBJECTS-----------------------------------#
@@ -44,11 +47,14 @@ INCLUDE			=		 								\
 						include
 HEADER_DIR		=										\
 						parsing							\
-						philo
-parsing_HDR	=											\
+						philo							\
+						routine
+parsing_HDR		=										\
 						parsing.h
 philo_HDR		=										\
 						philo.h
+routine_HDR		=										\
+						routine.h
 #------------------------------------RULES------------------------------------#
 all : check-build
 

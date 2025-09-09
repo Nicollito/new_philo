@@ -6,11 +6,12 @@
 /*   By: nimadela <nimadela@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 13:19:09 by nimadela          #+#    #+#             */
-/*   Updated: 2025/09/09 10:54:16 by nimadela         ###   ########.fr       */
+/*   Updated: 2025/09/09 15:10:54 by nimadela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
+#include <stdio.h>
 #include "philo.h"
 
 int	main(int ac, char **av)
@@ -23,5 +24,6 @@ int	main(int ac, char **av)
 	philo = init_philo(&data);
 	if (!philo)
 		return (1);
+	get_timestamp();
 	return (0);
 }
