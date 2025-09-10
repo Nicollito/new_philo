@@ -6,7 +6,7 @@
 /*   By: nimadela <nimadela@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 14:06:29 by nimadela          #+#    #+#             */
-/*   Updated: 2025/09/09 15:34:21 by nimadela         ###   ########.fr       */
+/*   Updated: 2025/09/10 11:47:59 by nimadela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,19 @@
 #  define SLEEP "is sleeping"
 #  define THINK "is thinking"
 
+typedef enum action
+{
+	TAKE,
+	DEPOSIT,
+}	t_action;
+
 // actions.c
 
-void	think(t_philo philo);
+void	sleep(t_philo *philo);
+
+void	think(t_philo *philo);
+
+void	eat(t_philo *philo);
 
 // mutex.c
 

@@ -6,7 +6,7 @@
 /*   By: nimadela <nimadela@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 13:39:45 by nimadela          #+#    #+#             */
-/*   Updated: 2025/09/09 14:41:19 by nimadela         ###   ########.fr       */
+/*   Updated: 2025/09/10 11:40:16 by nimadela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,9 @@ typedef struct data
 typedef struct philo
 {
 	int				num;
-	int				last_eat;
+	int				last_meal;
 	int				nbr_of_eat;
+	int				die;
 	int				*fork;
 	int				*next_fork;
 	struct data		*data;
@@ -53,6 +54,8 @@ int		parsing(int ac, char **av, t_data *data);
 
 /* ---------------routine---------------- */
 
-int		get_timestamp();
+// timestamp.c
+
+int		get_timestamp(void);
 
 #endif
