@@ -6,7 +6,7 @@
 /*   By: nimadela <nimadela@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 14:06:29 by nimadela          #+#    #+#             */
-/*   Updated: 2025/09/10 11:47:59 by nimadela         ###   ########.fr       */
+/*   Updated: 2025/09/11 16:41:33 by nimadela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 #  define EAT "is eating"
 #  define SLEEP "is sleeping"
 #  define THINK "is thinking"
+#  define DIE "died"
 
 typedef enum action
 {
@@ -28,7 +29,7 @@ typedef enum action
 
 // actions.c
 
-void	sleep(t_philo *philo);
+void	ft_sleep(t_philo *philo);
 
 void	think(t_philo *philo);
 

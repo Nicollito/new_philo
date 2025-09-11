@@ -6,9 +6,11 @@ NAME = philo
 CC = cc
 CFLAGS = -Werror -Wextra -Wall
 CFLAGS += 											\
+						-Iinclude/init				\
 						-Iinclude/parsing			\
 						-Iinclude/philo				\
-						-Iinclude/routine
+						-Iinclude/routine			\
+						-Iinclude/threads
 DFLAGS = -MMD -MF
 #------------------------------------DEBUG------------------------------------#
 CFLAGS_DEBUG = -g3 -Wuninitialized -fno-inline -O0
@@ -20,9 +22,11 @@ SRC_DIR 		=									\
 						init						\
 						main						\
 						parsing						\
-						routine
+						routine						\
+						threads
 init_SRCS		=									\
-						init.c
+						init.c						\
+						set_malloc.c
 main_SRCS		=									\
 						main.c						\
 						utils.c
@@ -30,9 +34,12 @@ parsing_SRCS	=									\
 						lib.c						\
 						parsing.c
 routine_SRCS	=									\
+						actions.c						\
 						mutex.c						\
 						routine.c					\
 						timestamp.c
+threads_SRCS	=									\
+						init_threads.c
 
 SRCS =	$(foreach dir,$(SRC_DIR), $(addprefix $(SRC)/$(dir)/,$($(dir)_SRCS)))
 #-----------------------------------OBJECTS-----------------------------------#
@@ -43,18 +50,24 @@ OBJS = $(patsubst $(SRC)/%.c, $(OBJ_DIR)/%.o, $(SRCS))
 DEPS_DIR = deps
 DEPS = $(patsubst $(SRC)/%.c, $(DEPS_DIR)/%.d, $(SRCS))
 #-----------------------------------INCLUDE-----------------------------------#
-INCLUDE			=		 								\
+INCLUDE			=		 							\
 						include
-HEADER_DIR		=										\
-						parsing							\
-						philo							\
-						routine
-parsing_HDR		=										\
+HEADER_DIR		=									\
+						init						\
+						parsing						\
+						philo						\
+						routine						\
+						threads
+init_HDR		=									\
+						init.h
+parsing_HDR		=									\
 						parsing.h
-philo_HDR		=										\
+philo_HDR		=									\
 						philo.h
-routine_HDR		=										\
+routine_HDR		=									\
 						routine.h
+threads_HDR	=										\
+						my_threads.h
 #------------------------------------RULES------------------------------------#
 all : check-build
 

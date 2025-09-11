@@ -6,13 +6,22 @@
 /*   By: nimadela <nimadela@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 13:19:09 by nimadela          #+#    #+#             */
-/*   Updated: 2025/09/10 16:25:54 by nimadela         ###   ########.fr       */
+/*   Updated: 2025/09/11 17:39:31 by nimadela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "philo.h"
 #include <unistd.h>
 #include <stdio.h>
-#include "philo.h"
+
+void	print_data(t_data *data)
+{
+	printf("num philo [%d]\n", data->num_of_philo);
+	printf("time die  [%d]\n", data->time_to_die);
+	printf("time eat  [%d]\n", data->time_to_eat);
+	printf("time slp  [%d]\n", data->time_to_sleep);
+	printf("num eat   [%d]\n", data->num_of_eat);
+}
 
 int	main(int ac, char **av)
 {
@@ -21,10 +30,11 @@ int	main(int ac, char **av)
 
 	if (parsing(ac, av, &data))
 		return (1);
+	print_data(&data);
 	philo = init_philo(&data);
 	if (!philo)
 		return (1);
 	get_timestamp();
-	
+	init_threads(&data, philo);
 	return (0);
 }

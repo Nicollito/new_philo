@@ -6,32 +6,18 @@
 /*   By: nimadela <nimadela@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 15:32:19 by nimadela          #+#    #+#             */
-/*   Updated: 2025/09/10 11:55:37 by nimadela         ###   ########.fr       */
+/*   Updated: 2025/09/11 16:41:30 by nimadela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "routine.h"
 #include <unistd.h>
 
-int	set_death(t_philo philo, int timestamp)
-{
-	int	period;
-
-	period = timestamp - philo.last_meal;
-	period = philo.data->time_to_die - period;
-	if (period <= 0)
-		return (1);
-	return (0);
-}
-
-void	sleep(t_philo *philo)
+void	ft_sleep(t_philo *philo)
 {
 	int	timestamp;
 
-	pthread_mutex_lock(philo->death_mutex);
 	timestamp = get_timestamp();
-	philo->die = set_death(*philo, timestamp);
-	pthread_mutex_unlock(philo->death_mutex);
 	pthread_mutex_lock(philo->printf_mutex);
 	print_log(timestamp, philo->num, SLEEP);
 	pthread_mutex_unlock(philo->printf_mutex);
@@ -42,10 +28,7 @@ void	think(t_philo *philo)
 {
 	int	timestamp;
 
-	pthread_mutex_lock(philo->death_mutex);
 	timestamp = get_timestamp();
-	philo->die = set_death(*philo, timestamp);
-	pthread_mutex_unlock(philo->death_mutex);
 	pthread_mutex_lock(philo->printf_mutex);
 	print_log(timestamp, philo->num, THINK);
 	pthread_mutex_unlock(philo->printf_mutex);
@@ -83,16 +66,16 @@ void	use_fork(t_philo *philo, t_action action)
 	{
 		if (philo->num % 2)
 		{
-			pthread_mutex_lock(&philo->fork_mutex);
+			pthread_mutex_lock(philo->fork_mutex);
 			pthread_mutex_lock(philo->next_fork_mutex);
 		}
 		else
 		{
 			pthread_mutex_lock(philo->next_fork_mutex);
-			pthread_mutex_lock(&philo->fork_mutex);
+			pthread_mutex_lock(philo->fork_mutex);
 		}
 		return_value = action_on_fork(philo->fork, philo->next_fork, action);
-		pthread_mutex_unlock(&philo->fork_mutex);
+		pthread_mutex_unlock(philo->fork_mutex);
 		pthread_mutex_unlock(philo->next_fork_mutex);
 	}
 }
@@ -101,12 +84,7 @@ void	eat(t_philo *philo)
 {
 	int	timestamp;
 
-	pthread_mutex_lock(philo->death_mutex);
 	timestamp = get_timestamp();
-	philo->die = set_death(*philo, timestamp);
-	if (philo->nbr_of_eat != -1)
-		philo->nbr_of_eat--;
-	pthread_mutex_unlock(philo->death_mutex);
 	use_fork(philo, TAKE);
 	pthread_mutex_lock(philo->printf_mutex);
 	print_log(timestamp, philo->num, EAT);

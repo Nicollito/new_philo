@@ -6,7 +6,7 @@
 /*   By: nimadela <nimadela@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 13:44:30 by nimadela          #+#    #+#             */
-/*   Updated: 2025/09/09 13:37:33 by nimadela         ###   ########.fr       */
+/*   Updated: 2025/09/11 17:29:40 by nimadela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,6 @@ static int	fill_data(int ac, char **av, t_data *data)
 	}
 	else
 		data->num_of_eat = -1;
-	data->die = 0;
 	return (0);
 }
 

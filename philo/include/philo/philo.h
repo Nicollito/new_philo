@@ -6,7 +6,7 @@
 /*   By: nimadela <nimadela@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 13:39:45 by nimadela          #+#    #+#             */
-/*   Updated: 2025/09/10 11:40:16 by nimadela         ###   ########.fr       */
+/*   Updated: 2025/09/11 17:44:54 by nimadela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ typedef struct data
 	int	time_to_eat;
 	int	time_to_sleep;
 	int	num_of_eat;
-	int	die;
 }		t_data;
 
 typedef struct philo
@@ -34,10 +33,12 @@ typedef struct philo
 	int				*fork;
 	int				*next_fork;
 	struct data		*data;
-	pthread_mutex_t	fork_mutex;
+	pthread_mutex_t	*fork_mutex;
 	pthread_mutex_t	*next_fork_mutex;
 	pthread_mutex_t	*printf_mutex;
 	pthread_mutex_t	*death_mutex;
+	pthread_mutex_t	*start;
+	pthread_t		threads;
 }					t_philo;
 
 /* ----------------init----------------- */
@@ -57,5 +58,9 @@ int		parsing(int ac, char **av, t_data *data);
 // timestamp.c
 
 int		get_timestamp(void);
+
+/* ----------------threads---------------- */
+
+int		init_threads(t_data *data, t_philo *philo);
 
 #endif

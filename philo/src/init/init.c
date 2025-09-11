@@ -6,15 +6,15 @@
 /*   By: nimadela <nimadela@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 10:21:56 by nimadela          #+#    #+#             */
-/*   Updated: 2025/09/10 17:48:39 by nimadela         ###   ########.fr       */
+/*   Updated: 2025/09/11 17:10:16 by nimadela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
-#include <stdlib.h>
+#include "init.h"
 #include <string.h>
+#include <stdlib.h>
 
-static void	fill_int(int i, int *fork, t_data *data, t_philo *philo)
+static void	init_int(int i, int *fork, t_data *data, t_philo *philo)
 {
 	philo[i].num = i + 1;
 	philo[i].nbr_of_eat = data->num_of_eat;
@@ -26,28 +26,42 @@ static void	fill_int(int i, int *fork, t_data *data, t_philo *philo)
 	philo[i].data = data;
 }
 
+static void	init_mutex(int i, t_mutex *mutex, t_philo *philo)
+{
+	philo[i].fork_mutex = &mutex->fork[i];
+	pthread_mutex_init(philo[i].fork_mutex, NULL);
+	if (i < philo->data->num_of_philo - 1)
+		philo[i].next_fork_mutex = &mutex->fork[i + 1];
+	else
+		philo[i].next_fork_mutex = &mutex->fork[0];
+	philo[i].printf_mutex = mutex->printf;
+	pthread_mutex_init(philo[i].printf_mutex, NULL);
+	philo[i].death_mutex = mutex->death;
+	pthread_mutex_init(philo[i].death_mutex, NULL);
+	philo[i].start = mutex->start;
+	pthread_mutex_init(philo[i].start, NULL);
+}
+
 t_philo	*init_philo(t_data *data)
 {
 	int				i;
 	int				*fork;
 	t_philo			*philo;
+	t_mutex			mutex;
 
 	i = 0;
-	fork = malloc(sizeof(int) * data->num_of_philo);
-	if (!fork)
+	if (malloc_table(&fork, &philo, data))
 		return (NULL);
-	memset(fork, 1, sizeof(int) * data->num_of_philo);
-	philo = malloc(sizeof(t_philo) * data->num_of_philo);
-	if (!philo)
+	if (malloc_mutex(&mutex, data))
 	{
 		free(fork);
+		free(philo);
 		return (NULL);
 	}
-	memset(philo, 0, sizeof(t_philo) * data->num_of_philo);
 	while (i < data->num_of_philo)
 	{
-		fill_int(i, fork, data, philo);
-		// init les mutex
+		init_int(i, fork, data, philo);
+		init_mutex(i, &mutex, philo);
 		i++;
 	}
 	return (philo);
