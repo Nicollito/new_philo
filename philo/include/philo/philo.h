@@ -6,7 +6,7 @@
 /*   By: nimadela <nimadela@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 13:39:45 by nimadela          #+#    #+#             */
-/*   Updated: 2025/09/11 17:44:54 by nimadela         ###   ########.fr       */
+/*   Updated: 2025/09/12 15:48:11 by nimadela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,16 +27,17 @@ typedef struct data
 typedef struct philo
 {
 	int				num;
+	int				dead;
 	int				last_meal;
 	int				nbr_of_eat;
-	int				die;
 	int				*fork;
 	int				*next_fork;
 	struct data		*data;
+	pthread_mutex_t	last_meal_mutex;
+	pthread_mutex_t	death_mutex;
 	pthread_mutex_t	*fork_mutex;
 	pthread_mutex_t	*next_fork_mutex;
 	pthread_mutex_t	*printf_mutex;
-	pthread_mutex_t	*death_mutex;
 	pthread_mutex_t	*start;
 	pthread_t		threads;
 }					t_philo;
@@ -61,6 +62,8 @@ int		get_timestamp(void);
 
 /* ----------------threads---------------- */
 
-int		init_threads(t_data *data, t_philo *philo);
+// manage_threads.c
+
+void	manage_threads(t_data *data, t_philo *philo);
 
 #endif

@@ -39,7 +39,7 @@ routine_SRCS	=									\
 						routine.c					\
 						timestamp.c
 threads_SRCS	=									\
-						init_threads.c
+						manage_threads.c
 
 SRCS =	$(foreach dir,$(SRC_DIR), $(addprefix $(SRC)/$(dir)/,$($(dir)_SRCS)))
 #-----------------------------------OBJECTS-----------------------------------#

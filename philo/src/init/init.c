@@ -6,7 +6,7 @@
 /*   By: nimadela <nimadela@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 10:21:56 by nimadela          #+#    #+#             */
-/*   Updated: 2025/09/11 17:10:16 by nimadela         ###   ########.fr       */
+/*   Updated: 2025/09/12 15:46:52 by nimadela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ static void	init_int(int i, int *fork, t_data *data, t_philo *philo)
 
 static void	init_mutex(int i, t_mutex *mutex, t_philo *philo)
 {
+	pthread_mutex_init(&philo[i].last_meal_mutex, NULL);
 	philo[i].fork_mutex = &mutex->fork[i];
 	pthread_mutex_init(philo[i].fork_mutex, NULL);
 	if (i < philo->data->num_of_philo - 1)
@@ -36,8 +37,7 @@ static void	init_mutex(int i, t_mutex *mutex, t_philo *philo)
 		philo[i].next_fork_mutex = &mutex->fork[0];
 	philo[i].printf_mutex = mutex->printf;
 	pthread_mutex_init(philo[i].printf_mutex, NULL);
-	philo[i].death_mutex = mutex->death;
-	pthread_mutex_init(philo[i].death_mutex, NULL);
+	pthread_mutex_init(&philo[i].death_mutex, NULL);
 	philo[i].start = mutex->start;
 	pthread_mutex_init(philo[i].start, NULL);
 }

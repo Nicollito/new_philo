@@ -6,7 +6,7 @@
 /*   By: nimadela <nimadela@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 13:19:09 by nimadela          #+#    #+#             */
-/*   Updated: 2025/09/11 17:39:31 by nimadela         ###   ########.fr       */
+/*   Updated: 2025/09/12 14:59:55 by nimadela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,9 @@ int	main(int ac, char **av)
 
 	if (parsing(ac, av, &data))
 		return (1);
-	print_data(&data);
 	philo = init_philo(&data);
 	if (!philo)
 		return (1);
-	get_timestamp();
-	init_threads(&data, philo);
+	manage_threads(&data, philo);
 	return (0);
 }

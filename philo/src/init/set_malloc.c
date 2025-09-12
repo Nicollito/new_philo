@@ -6,7 +6,7 @@
 /*   By: nimadela <nimadela@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 13:07:12 by nimadela          #+#    #+#             */
-/*   Updated: 2025/09/11 16:40:52 by nimadela         ###   ########.fr       */
+/*   Updated: 2025/09/12 15:54:30 by nimadela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	malloc_table(int **fork, t_philo **philo, t_data *data)
 	*fork = malloc(sizeof(int) * data->num_of_philo);
 	if (!*fork)
 		return (1);
-	memset(*fork, 1, sizeof(int) * data->num_of_philo);
+	memset(*fork, 1o 3 610 200 200, sizeof(int) * data->num_of_philo);
 	*philo = malloc(sizeof(t_philo) * data->num_of_philo);
 	if (!*philo)
 	{
@@ -41,19 +41,11 @@ int	malloc_mutex(t_mutex *mutex, t_data *data)
 		free(mutex->fork);
 		return (1);
 	}
-	mutex->death = malloc(sizeof(pthread_mutex_t));
-	if (!mutex->death)
-	{
-		free(mutex->fork);
-		free(mutex->printf);
-		return (1);
-	}
 	mutex->start = malloc(sizeof(pthread_mutex_t));
 	if (!mutex->start)
 	{
 		free(mutex->fork);
 		free(mutex->printf);
-		free(mutex->death);
 		return (1);
 	}
 	return (0);
