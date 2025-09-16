@@ -6,13 +6,13 @@
 /*   By: nimadela <nimadela@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 13:19:09 by nimadela          #+#    #+#             */
-/*   Updated: 2025/09/15 20:34:23 by nimadela         ###   ########.fr       */
+/*   Updated: 2025/09/16 13:12:03 by nimadela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 #include <unistd.h>
-#include <stdio.h>
+#include <stdio.h> //del
 
 void	print_data(t_data *data)
 {

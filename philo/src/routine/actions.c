@@ -6,21 +6,20 @@
 /*   By: nimadela <nimadela@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 15:32:19 by nimadela          #+#    #+#             */
-/*   Updated: 2025/09/16 02:20:10 by nimadela         ###   ########.fr       */
+/*   Updated: 2025/09/16 13:11:53 by nimadela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "routine.h"
 #include <unistd.h>
-#include <stdio.h> //a del
 
-int	ft_sleep(t_philo *philo, t_data data)
+t_state	ft_sleep(t_philo *philo, t_data data)
 {
 	int	timestamp;
 
 	timestamp = get_timestamp();
 	print_log(timestamp, philo->num, SLEEP, philo->printf_mutex);
-	return (ft_msleep(data.time_to_sleep, philo));
+	return (ft_usleep(data.time_to_sleep * 1000, philo));
 }
 
 void	think(t_philo *philo)
@@ -80,15 +79,14 @@ static void	hunger_priority(t_philo *philo)
 	time_since_meal = get_timestamp() - philo->last_meal;
 	pthread_mutex_unlock(&philo->last_meal_mutex);
 	hunger_ration = (float)time_since_meal / philo->data->time_to_die;
-	max_wait = 5000;
+	max_wait = 500;
 	wait_time = max_wait * (1.0 - hunger_ration);
-	fprintf(stderr, "wait_time [%d] [%d]\n", wait_time, philo->num);
 	if (wait_time < 0)
 		wait_time = 0;
 	if (wait_time > max_wait)
 		wait_time = max_wait;
 	if (wait_time > 0)
-		usleep(wait_time);
+		ft_usleep(wait_time, NULL);
 }
 
 void	use_fork(t_philo *philo, t_action action)
@@ -97,7 +95,8 @@ void	use_fork(t_philo *philo, t_action action)
 
 	while (1)
 	{
-		hunger_priority(philo); //nul ça casse tout
+		if (action == TAKE)
+			hunger_priority(philo);
 		if (philo->num == philo->data->num_of_philo)
 		{
 			take_first_fork(philo->fork, philo->fork_mutex, action);
@@ -122,7 +121,7 @@ void	use_fork(t_philo *philo, t_action action)
 	}
 }
 
-int	eat(t_philo *philo, t_data data)
+t_state	eat(t_philo *philo, t_data data)
 {
 	int				timestamp;
 	int				status;
@@ -131,16 +130,18 @@ int	eat(t_philo *philo, t_data data)
 	last_meal_mutex = &philo->last_meal_mutex;
 	use_fork(philo, TAKE);
 	timestamp = get_timestamp();
-	if (isdead(philo, &philo->death_mutex))
+	if (isdead(philo, &philo->death_mutex) != ALIVE)
 	{
 		use_fork(philo, DEPOSIT);
 		return (1);
 	}
-	print_log(timestamp, philo->num, EAT, philo->printf_mutex);
 	pthread_mutex_lock(last_meal_mutex);
 	philo->last_meal = timestamp;
+	if (philo->nbr_of_eat > 0)
+		philo->nbr_of_eat--;
 	pthread_mutex_unlock(last_meal_mutex);
-	status = ft_msleep(data.time_to_eat, philo);
+	print_log(timestamp, philo->num, EAT, philo->printf_mutex);
+	status = ft_usleep(data.time_to_eat * 1000, philo);
 	use_fork(philo, DEPOSIT);
 	return (status);
 }

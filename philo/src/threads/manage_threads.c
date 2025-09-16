@@ -6,17 +6,15 @@
 /*   By: nimadela <nimadela@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 15:43:17 by nimadela          #+#    #+#             */
-/*   Updated: 2025/09/15 21:32:30 by nimadela         ###   ########.fr       */
+/*   Updated: 2025/09/16 12:12:29 by nimadela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "my_threads.h"
 #include "routine.h"
 #include <stdlib.h>
-#include <unistd.h>
-#include <stdio.h> //a del
 
-static void	set_death_philo(t_philo *philo)
+static void	set_state_philo(t_philo *philo, t_state current)
 {
 	int	i;
 
@@ -24,38 +22,64 @@ static void	set_death_philo(t_philo *philo)
 	while (i < philo->data->num_of_philo)
 	{
 		pthread_mutex_lock(&philo[i].death_mutex);
-		philo[i].dead = 1;
+		philo[i].state = current;
 		pthread_mutex_unlock(&philo[i].death_mutex);
 		i++;
 	}
 }
 
-static void	look_for_die(t_data *data, t_philo *philo)
+static t_state	check_state(t_philo *current, t_data *data,
+	t_philo *philo, int timestamp)
 {
 	int	i;
-	int	die;
-	int	timestamp;
+
+	i = -1;
+	pthread_mutex_lock(&current->last_meal_mutex);
+	if (timestamp - current->last_meal >= data->time_to_die)
+	{
+		pthread_mutex_unlock(&current->last_meal_mutex);
+		return (DEAD);
+	}
+	pthread_mutex_unlock(&current->last_meal_mutex);
+	if (data->num_of_eat == -1)
+		return (ALIVE);
+	while (++i < data->num_of_philo)
+	{
+		pthread_mutex_lock(&philo[i].last_meal_mutex);
+		if (philo[i].nbr_of_eat > 0)
+		{
+			pthread_mutex_unlock(&philo[i].last_meal_mutex);
+			return (ALIVE);
+		}
+		pthread_mutex_unlock(&philo[i].last_meal_mutex);
+	}
+	return (FED);
+}
+
+static void	look_for_die(t_data *data, t_philo *philo)
+{
+	int		i;
+	t_state	state;
+	int		timestamp;
 
 	i = 0;
-	die = 0;
+	state = ALIVE;
 	while (1)
 	{
 		timestamp = get_timestamp();
-		pthread_mutex_lock(&philo[i].last_meal_mutex);
-		if (timestamp - philo[i].last_meal >= data->time_to_die)
-			die = 1;
-		pthread_mutex_unlock(&philo[i].last_meal_mutex);
-		if (die)
+		state = check_state(&philo[i], data, philo, timestamp);
+		if (state != ALIVE)
 		{
-			set_death_philo(philo);
+			set_state_philo(philo, state);
 			break ;
 		}
 		i++;
 		if (i == data->num_of_philo)
 			i = 0;
 	}
-	usleep(100);
-	print_log(timestamp, philo[i].num, DIE, philo->printf_mutex);
+	ft_usleep(1000, NULL);
+	if (state == DEAD)
+		print_log(timestamp, philo[i].num, DIE, philo->printf_mutex);
 }
 
 static void	init_threads(t_data *data, t_philo *philo)
@@ -67,9 +91,8 @@ static void	init_threads(t_data *data, t_philo *philo)
 	get_timestamp();
 	while (++i < data->num_of_philo)
 		pthread_create(&philo[i].threads, NULL, routine, &philo[i]);
-	ft_msleep(data->num_of_philo / 10, NULL);
+	ft_usleep(data->num_of_philo * 100, NULL);
 	pthread_mutex_unlock(philo->start);
-	fprintf(stderr, "timestamp [%d]\n", get_timestamp());
 }
 
 static void	join_threads(t_philo *philo)

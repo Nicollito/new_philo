@@ -6,7 +6,7 @@
 /*   By: nimadela <nimadela@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 13:39:45 by nimadela          #+#    #+#             */
-/*   Updated: 2025/09/15 20:24:13 by nimadela         ###   ########.fr       */
+/*   Updated: 2025/09/16 11:21:39 by nimadela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,13 @@
 # define PHILO_H
 
 # include <pthread.h>
+
+typedef enum state
+{
+	ALIVE,
+	DEAD,
+	FED,
+}	t_state;
 
 typedef struct data
 {
@@ -27,7 +34,7 @@ typedef struct data
 typedef struct philo
 {
 	int				num;
-	int				dead;
+	t_state			state;
 	int				last_meal;
 	int				nbr_of_eat;
 	int				*fork;

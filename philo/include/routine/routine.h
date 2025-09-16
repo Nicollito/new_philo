@@ -6,7 +6,7 @@
 /*   By: nimadela <nimadela@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 14:06:29 by nimadela          #+#    #+#             */
-/*   Updated: 2025/09/15 21:18:24 by nimadela         ###   ########.fr       */
+/*   Updated: 2025/09/16 11:34:33 by nimadela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,11 @@ typedef enum action
 
 // actions.c
 
-int		ft_sleep(t_philo *philo, t_data data);
+t_state	ft_sleep(t_philo *philo, t_data data);
 
 void	think(t_philo *philo);
 
-int		eat(t_philo *philo, t_data data);
+t_state	eat(t_philo *philo, t_data data);
 
 // mutex.c
 
@@ -41,8 +41,8 @@ void	print_log(int timestamp, int philo, char *msg, pthread_mutex_t *mutex);
 
 // routine.c
 
-int		isdead(t_philo *philo, pthread_mutex_t *death_mutex);
+t_state	isdead(t_philo *philo, pthread_mutex_t *death_mutex);
 
-int		ft_msleep(unsigned int ms, t_philo *philo);
+int		ft_usleep(unsigned int us, t_philo *philo);
 
 #endif
