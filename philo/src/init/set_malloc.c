@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   set_malloc.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nimadela <nimadela@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nimadela <nimadela@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 13:07:12 by nimadela          #+#    #+#             */
-/*   Updated: 2025/09/12 15:54:30 by nimadela         ###   ########.fr       */
+/*   Updated: 2025/09/15 20:31:42 by nimadela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	malloc_table(int **fork, t_philo **philo, t_data *data)
 	*fork = malloc(sizeof(int) * data->num_of_philo);
 	if (!*fork)
 		return (1);
-	memset(*fork, 1o 3 610 200 200, sizeof(int) * data->num_of_philo);
+	memset(*fork, 1, sizeof(int) * data->num_of_philo);
 	*philo = malloc(sizeof(t_philo) * data->num_of_philo);
 	if (!*philo)
 	{
@@ -36,7 +36,8 @@ int	malloc_mutex(t_mutex *mutex, t_data *data)
 	if (!mutex->fork)
 		return (1);
 	mutex->printf = malloc(sizeof(pthread_mutex_t));
-	if (!mutex->fork)
+	pthread_mutex_init(mutex->printf, NULL);
+	if (!mutex->printf)
 	{
 		free(mutex->fork);
 		return (1);

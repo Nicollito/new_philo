@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nimadela <nimadela@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nimadela <nimadela@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 10:21:56 by nimadela          #+#    #+#             */
-/*   Updated: 2025/09/12 15:46:52 by nimadela         ###   ########.fr       */
+/*   Updated: 2025/09/15 20:31:28 by nimadela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ static void	init_mutex(int i, t_mutex *mutex, t_philo *philo)
 	else
 		philo[i].next_fork_mutex = &mutex->fork[0];
 	philo[i].printf_mutex = mutex->printf;
-	pthread_mutex_init(philo[i].printf_mutex, NULL);
 	pthread_mutex_init(&philo[i].death_mutex, NULL);
 	philo[i].start = mutex->start;
 	pthread_mutex_init(philo[i].start, NULL);

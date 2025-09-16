@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   manage_threads.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nimadela <nimadela@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nimadela <nimadela@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 15:43:17 by nimadela          #+#    #+#             */
-/*   Updated: 2025/09/12 15:49:09 by nimadela         ###   ########.fr       */
+/*   Updated: 2025/09/15 21:32:30 by nimadela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,21 @@
 #include "routine.h"
 #include <stdlib.h>
 #include <unistd.h>
+#include <stdio.h> //a del
+
+static void	set_death_philo(t_philo *philo)
+{
+	int	i;
+
+	i = 0;
+	while (i < philo->data->num_of_philo)
+	{
+		pthread_mutex_lock(&philo[i].death_mutex);
+		philo[i].dead = 1;
+		pthread_mutex_unlock(&philo[i].death_mutex);
+		i++;
+	}
+}
 
 static void	look_for_die(t_data *data, t_philo *philo)
 {
@@ -32,15 +47,14 @@ static void	look_for_die(t_data *data, t_philo *philo)
 		pthread_mutex_unlock(&philo[i].last_meal_mutex);
 		if (die)
 		{
-			pthread_mutex_lock(&philo[i].death_mutex);
-			philo[i].dead = die;
-			pthread_mutex_unlock(&philo[i].death_mutex);
+			set_death_philo(philo);
 			break ;
 		}
 		i++;
 		if (i == data->num_of_philo)
 			i = 0;
 	}
+	usleep(100);
 	print_log(timestamp, philo[i].num, DIE, philo->printf_mutex);
 }
 
@@ -50,15 +64,26 @@ static void	init_threads(t_data *data, t_philo *philo)
 
 	i = -1;
 	pthread_mutex_lock(philo->start);
+	get_timestamp();
 	while (++i < data->num_of_philo)
 		pthread_create(&philo[i].threads, NULL, routine, &philo[i]);
-	usleep(data->num_of_philo * 100);
-	get_timestamp();
+	ft_msleep(data->num_of_philo / 10, NULL);
 	pthread_mutex_unlock(philo->start);
+	fprintf(stderr, "timestamp [%d]\n", get_timestamp());
+}
+
+static void	join_threads(t_philo *philo)
+{
+	int	i;
+
+	i = -1;
+	while (++i < philo->data->num_of_philo)
+		pthread_join(philo[i].threads, NULL);
 }
 
 void	manage_threads(t_data *data, t_philo *philo)
 {
 	init_threads(data, philo);
 	look_for_die(data, philo);
+	join_threads(philo);
 }

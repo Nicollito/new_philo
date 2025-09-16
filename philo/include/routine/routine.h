@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   routine.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nimadela <nimadela@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nimadela <nimadela@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 14:06:29 by nimadela          #+#    #+#             */
-/*   Updated: 2025/09/12 14:20:09 by nimadela         ###   ########.fr       */
+/*   Updated: 2025/09/15 21:18:24 by nimadela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,14 +29,20 @@ typedef enum action
 
 // actions.c
 
-void	ft_sleep(t_philo *philo, t_data *data);
+int		ft_sleep(t_philo *philo, t_data data);
 
 void	think(t_philo *philo);
 
-void	eat(t_philo *philo, t_data *data);
+int		eat(t_philo *philo, t_data data);
 
 // mutex.c
 
 void	print_log(int timestamp, int philo, char *msg, pthread_mutex_t *mutex);
+
+// routine.c
+
+int		isdead(t_philo *philo, pthread_mutex_t *death_mutex);
+
+int		ft_msleep(unsigned int ms, t_philo *philo);
 
 #endif

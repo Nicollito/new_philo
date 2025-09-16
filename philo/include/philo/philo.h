@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nimadela <nimadela@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nimadela <nimadela@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 13:39:45 by nimadela          #+#    #+#             */
-/*   Updated: 2025/09/12 15:48:11 by nimadela         ###   ########.fr       */
+/*   Updated: 2025/09/15 20:24:13 by nimadela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,10 @@ typedef struct philo
 }					t_philo;
 
 /* ----------------init----------------- */
+
+// all_free.c
+
+void	free_philo(t_philo *philo);
 
 // init.c
 

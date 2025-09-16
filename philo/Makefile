@@ -25,16 +25,16 @@ SRC_DIR 		=									\
 						routine						\
 						threads
 init_SRCS		=									\
+						all_free.c					\
 						init.c						\
 						set_malloc.c
 main_SRCS		=									\
-						main.c						\
-						utils.c
+						main.c
 parsing_SRCS	=									\
 						lib.c						\
 						parsing.c
 routine_SRCS	=									\
-						actions.c						\
+						actions.c					\
 						mutex.c						\
 						routine.c					\
 						timestamp.c

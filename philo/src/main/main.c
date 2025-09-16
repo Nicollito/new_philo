@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nimadela <nimadela@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nimadela <nimadela@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 13:19:09 by nimadela          #+#    #+#             */
-/*   Updated: 2025/09/12 14:59:55 by nimadela         ###   ########.fr       */
+/*   Updated: 2025/09/15 20:34:23 by nimadela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,5 +34,6 @@ int	main(int ac, char **av)
 	if (!philo)
 		return (1);
 	manage_threads(&data, philo);
+	free_philo(philo);
 	return (0);
 }
