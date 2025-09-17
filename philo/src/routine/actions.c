@@ -6,12 +6,19 @@
 /*   By: nimadela <nimadela@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 15:32:19 by nimadela          #+#    #+#             */
-/*   Updated: 2025/09/16 13:11:53 by nimadela         ###   ########.fr       */
+/*   Updated: 2025/09/17 17:22:42 by nimadela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "routine.h"
-#include <unistd.h>
+#include "actions.h"
+#include <stdio.h>
+
+void	print_log(int timestamp, int philo, char *msg, pthread_mutex_t *mutex)
+{
+	pthread_mutex_lock(mutex);
+	printf("%d %d %s\n", timestamp, philo, msg);
+	pthread_mutex_unlock(mutex);
+}
 
 t_state	ft_sleep(t_philo *philo, t_data data)
 {
@@ -30,66 +37,7 @@ void	think(t_philo *philo)
 	print_log(timestamp, philo->num, THINK, philo->printf_mutex);
 }
 
-static int	action_on_fork(int *fork, t_action action)
-{
-	if (action == TAKE && *fork)
-	{
-		*fork = 0;
-		return (1);
-	}
-	if (action == DEPOSIT && !*fork)
-	{
-		*fork = 1;
-		return (1);
-	}
-	return (0);
-}
-static void	take_first_fork(int *fork, pthread_mutex_t *mutex,
-		t_action action)
-{
-	while (1)
-	{
-		pthread_mutex_lock(mutex);
-		if (action_on_fork(fork, action))
-			break ;
-		pthread_mutex_unlock(mutex);
-	}
-	pthread_mutex_unlock(mutex);
-}
-
-static int	take_second_fork(int *fork, pthread_mutex_t *mutex,
-		t_action action)
-{
-	int	status;
-
-	pthread_mutex_lock(mutex);
-	status = action_on_fork(fork, action);
-	pthread_mutex_unlock(mutex);
-	return (status);
-}
-
-static void	hunger_priority(t_philo *philo)
-{
-	int		time_since_meal;
-	int		max_wait;
-	int		wait_time;
-	float	hunger_ration;
-
-	pthread_mutex_lock(&philo->last_meal_mutex);
-	time_since_meal = get_timestamp() - philo->last_meal;
-	pthread_mutex_unlock(&philo->last_meal_mutex);
-	hunger_ration = (float)time_since_meal / philo->data->time_to_die;
-	max_wait = 500;
-	wait_time = max_wait * (1.0 - hunger_ration);
-	if (wait_time < 0)
-		wait_time = 0;
-	if (wait_time > max_wait)
-		wait_time = max_wait;
-	if (wait_time > 0)
-		ft_usleep(wait_time, NULL);
-}
-
-void	use_fork(t_philo *philo, t_action action)
+static void	use_fork(t_philo *philo, t_action action)
 {
 	int	status;
 
@@ -97,20 +45,7 @@ void	use_fork(t_philo *philo, t_action action)
 	{
 		if (action == TAKE)
 			hunger_priority(philo);
-		if (philo->num == philo->data->num_of_philo)
-		{
-			take_first_fork(philo->fork, philo->fork_mutex, action);
-			status = take_second_fork(philo->next_fork, philo->next_fork_mutex, action);
-			if (!status)
-				take_first_fork(philo->fork, philo->fork_mutex, DEPOSIT);
-		}
-		else
-		{
-			take_first_fork(philo->next_fork, philo->next_fork_mutex, action);
-			status = take_second_fork(philo->fork,  philo->fork_mutex, action);
-			if (!status)
-				take_first_fork(philo->next_fork, philo->next_fork_mutex, DEPOSIT);
-		}
+		status = left_handed_philo(philo, action);
 		if (status)
 			break ;
 	}

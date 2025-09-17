@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lib.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nimadela <nimadela@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nimadela <nimadela@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 14:03:57 by nimadela          #+#    #+#             */
-/*   Updated: 2025/09/12 11:17:57 by nimadela         ###   ########.fr       */
+/*   Updated: 2025/09/17 17:10:46 by nimadela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	ft_atoi(char *str)
 {
 	int	i;
 	int	res;
-	int tmp;
+	int	tmp;
 
 	i = 0;
 	res = 0;

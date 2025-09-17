@@ -6,12 +6,11 @@
 /*   By: nimadela <nimadela@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 10:21:56 by nimadela          #+#    #+#             */
-/*   Updated: 2025/09/15 20:31:28 by nimadela         ###   ########.fr       */
+/*   Updated: 2025/09/17 17:19:32 by nimadela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "init.h"
-#include <string.h>
 #include <stdlib.h>
 
 static void	init_int(int i, int *fork, t_data *data, t_philo *philo)

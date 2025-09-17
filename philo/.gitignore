@@ -3,3 +3,5 @@ deps/
 philo
 .vscode
 LazyPhilosophersTester
+count_is_eating.sh
+test

@@ -35,11 +35,12 @@ parsing_SRCS	=									\
 						parsing.c
 routine_SRCS	=									\
 						actions.c					\
-						mutex.c						\
+						eat_utils.c					\
 						routine.c					\
 						timestamp.c
 threads_SRCS	=									\
-						manage_threads.c
+						manage_threads.c			\
+						state_of_philo.c
 
 SRCS =	$(foreach dir,$(SRC_DIR), $(addprefix $(SRC)/$(dir)/,$($(dir)_SRCS)))
 #-----------------------------------OBJECTS-----------------------------------#
@@ -65,6 +66,7 @@ parsing_HDR		=									\
 philo_HDR		=									\
 						philo.h
 routine_HDR		=									\
+						actions.h					\
 						routine.h
 threads_HDR	=										\
 						my_threads.h

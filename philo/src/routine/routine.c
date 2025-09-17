@@ -6,11 +6,10 @@
 /*   By: nimadela <nimadela@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 11:30:29 by nimadela          #+#    #+#             */
-/*   Updated: 2025/09/16 12:49:48 by nimadela         ###   ########.fr       */
+/*   Updated: 2025/09/17 18:28:41 by nimadela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
 #include "routine.h"
 #include <unistd.h>
 #include <sys/time.h>
@@ -38,10 +37,11 @@ int	ft_usleep(unsigned int us, t_philo *philo)
 		if (philo && (isdead(philo, &philo->death_mutex) != ALIVE))
 			return (1);
 		gettimeofday(&current, NULL);
-		elapsed_us = (current.tv_sec - start.tv_sec) * 1000000 +
-			(current.tv_usec - start.tv_usec);
+		elapsed_us = (current.tv_sec - start.tv_sec) * 1000000
+			+ (current.tv_usec - start.tv_usec);
 		if ((long)(us - elapsed_us) <= 0)
 			break ;
+		usleep(100);
 	}
 	return (0);
 }
@@ -59,11 +59,29 @@ static void	routine_one(t_philo *philo)
 	}
 }
 
+static void	loop(t_philo *philo, t_data data, pthread_mutex_t *death_mutex)
+{
+	while (1)
+	{
+		if (isdead(philo, death_mutex) != ALIVE)
+			return ;
+		think(philo);
+		if (isdead(philo, death_mutex) != ALIVE)
+			return ;
+		if (eat(philo, data) != ALIVE)
+			return ;
+		if (isdead(philo, death_mutex) != ALIVE)
+			return ;
+		if (ft_sleep(philo, data) != ALIVE)
+			return ;
+	}
+}
+
 void	*routine(void *philo_ptr)
 {
 	t_data			data;
 	t_philo			*philo;
-	pthread_mutex_t *death_mutex;
+	pthread_mutex_t	*death_mutex;
 
 	philo = (t_philo *)philo_ptr;
 	data = *philo->data;
@@ -77,18 +95,6 @@ void	*routine(void *philo_ptr)
 	}
 	if (!philo->num % 2)
 		ft_usleep(data.time_to_eat * 100, NULL);
-	while (1)
-	{
-		if (isdead(philo, death_mutex) != ALIVE)
-			return (NULL);
-		think(philo);
-		if (isdead(philo, death_mutex) != ALIVE)
-			return (NULL);
-		if (eat(philo, data) != ALIVE)
-			return (NULL);
-		if (isdead(philo, death_mutex) != ALIVE)
-			return (NULL);
-		if (ft_sleep(philo, data) != ALIVE)
-			return (NULL);
-	}
+	loop(philo, data, death_mutex);
+	return (NULL);
 }

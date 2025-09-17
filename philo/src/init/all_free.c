@@ -6,7 +6,7 @@
 /*   By: nimadela <nimadela@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 20:07:37 by nimadela          #+#    #+#             */
-/*   Updated: 2025/09/15 20:28:40 by nimadela         ###   ########.fr       */
+/*   Updated: 2025/09/17 17:19:25 by nimadela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static void	destroy_mutex_loop(t_philo philo)
 void	free_philo(t_philo *philo)
 {
 	int	i;
-	
+
 	i = -1;
 	pthread_mutex_destroy(philo->printf_mutex);
 	pthread_mutex_destroy(philo->start);
