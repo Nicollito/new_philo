@@ -6,7 +6,7 @@
 /*   By: nimadela <nimadela@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 13:39:45 by nimadela          #+#    #+#             */
-/*   Updated: 2025/09/16 11:21:39 by nimadela         ###   ########.fr       */
+/*   Updated: 2025/09/19 11:13:47 by nimadela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@ typedef struct philo
 	pthread_mutex_t	*fork_mutex;
 	pthread_mutex_t	*next_fork_mutex;
 	pthread_mutex_t	*printf_mutex;
-	pthread_mutex_t	*start;
 	pthread_t		threads;
 }					t_philo;
 

@@ -6,7 +6,7 @@
 /*   By: nimadela <nimadela@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 13:07:12 by nimadela          #+#    #+#             */
-/*   Updated: 2025/09/17 17:20:08 by nimadela         ###   ########.fr       */
+/*   Updated: 2025/09/19 11:44:47 by nimadela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,18 +36,11 @@ int	malloc_mutex(t_mutex *mutex, t_data *data)
 	if (!mutex->fork)
 		return (1);
 	mutex->printf = malloc(sizeof(pthread_mutex_t));
-	pthread_mutex_init(mutex->printf, NULL);
 	if (!mutex->printf)
 	{
 		free(mutex->fork);
 		return (1);
 	}
-	mutex->start = malloc(sizeof(pthread_mutex_t));
-	if (!mutex->start)
-	{
-		free(mutex->fork);
-		free(mutex->printf);
-		return (1);
-	}
+	pthread_mutex_init(mutex->printf, NULL);
 	return (0);
 }

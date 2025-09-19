@@ -5,3 +5,6 @@ philo
 LazyPhilosophersTester
 count_is_eating.sh
 test
+crash_with_3_602_200_200
+PhilosophersChecker.py
+run_many.sh

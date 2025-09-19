@@ -6,7 +6,7 @@
 /*   By: nimadela <nimadela@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 11:30:29 by nimadela          #+#    #+#             */
-/*   Updated: 2025/09/17 18:28:41 by nimadela         ###   ########.fr       */
+/*   Updated: 2025/09/19 11:16:04 by nimadela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ t_state	isdead(t_philo *philo, pthread_mutex_t *death_mutex)
 	return (status);
 }
 
-int	ft_usleep(unsigned int us, t_philo *philo)
+t_state	ft_usleep(unsigned int us, t_philo *philo)
 {
 	struct timeval	start;
 	struct timeval	current;
@@ -35,15 +35,15 @@ int	ft_usleep(unsigned int us, t_philo *philo)
 	while (1)
 	{
 		if (philo && (isdead(philo, &philo->death_mutex) != ALIVE))
-			return (1);
+			return (DEAD);
 		gettimeofday(&current, NULL);
 		elapsed_us = (current.tv_sec - start.tv_sec) * 1000000
 			+ (current.tv_usec - start.tv_usec);
 		if ((long)(us - elapsed_us) <= 0)
 			break ;
-		usleep(100);
+		usleep(5);
 	}
-	return (0);
+	return (ALIVE);
 }
 
 static void	routine_one(t_philo *philo)
@@ -61,6 +61,9 @@ static void	routine_one(t_philo *philo)
 
 static void	loop(t_philo *philo, t_data data, pthread_mutex_t *death_mutex)
 {
+	t_call	call;
+
+	call = INIT;
 	while (1)
 	{
 		if (isdead(philo, death_mutex) != ALIVE)
@@ -68,12 +71,13 @@ static void	loop(t_philo *philo, t_data data, pthread_mutex_t *death_mutex)
 		think(philo);
 		if (isdead(philo, death_mutex) != ALIVE)
 			return ;
-		if (eat(philo, data) != ALIVE)
+		if (eat(philo, data, call) != ALIVE)
 			return ;
 		if (isdead(philo, death_mutex) != ALIVE)
 			return ;
 		if (ft_sleep(philo, data) != ALIVE)
 			return ;
+		call = REUSED;
 	}
 }
 
@@ -86,15 +90,11 @@ void	*routine(void *philo_ptr)
 	philo = (t_philo *)philo_ptr;
 	data = *philo->data;
 	death_mutex = &philo->death_mutex;
-	pthread_mutex_lock(philo->start);
-	pthread_mutex_unlock(philo->start);
 	if (data.num_of_philo == 1)
 	{
 		routine_one(philo);
 		return (NULL);
 	}
-	if (!philo->num % 2)
-		ft_usleep(data.time_to_eat * 100, NULL);
 	loop(philo, data, death_mutex);
 	return (NULL);
 }

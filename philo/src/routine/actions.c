@@ -6,7 +6,7 @@
 /*   By: nimadela <nimadela@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 15:32:19 by nimadela          #+#    #+#             */
-/*   Updated: 2025/09/17 17:22:42 by nimadela         ###   ########.fr       */
+/*   Updated: 2025/09/19 11:27:46 by nimadela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,14 +37,19 @@ void	think(t_philo *philo)
 	print_log(timestamp, philo->num, THINK, philo->printf_mutex);
 }
 
-static void	use_fork(t_philo *philo, t_action action)
+static t_state	use_fork(t_philo *philo, t_action action, t_call call)
 {
 	int	status;
 
 	while (1)
 	{
-		if (action == TAKE)
+		if (action == TAKE && call == REUSED)
 			hunger_priority(philo);
+		if (isdead(philo, &philo->death_mutex) != ALIVE)
+		{
+			left_handed_philo(philo, DEPOSIT);
+			return (DEAD);
+		}
 		status = left_handed_philo(philo, action);
 		if (status)
 			break ;
@@ -54,21 +59,23 @@ static void	use_fork(t_philo *philo, t_action action)
 		print_log(get_timestamp(), philo->num, FORK, philo->printf_mutex);
 		print_log(get_timestamp(), philo->num, FORK, philo->printf_mutex);
 	}
+	return (ALIVE);
 }
 
-t_state	eat(t_philo *philo, t_data data)
+t_state	eat(t_philo *philo, t_data data, t_call call)
 {
 	int				timestamp;
 	int				status;
 	pthread_mutex_t	*last_meal_mutex;
 
 	last_meal_mutex = &philo->last_meal_mutex;
-	use_fork(philo, TAKE);
+	if (use_fork(philo, TAKE, call) != ALIVE)
+		return (DEAD);
 	timestamp = get_timestamp();
 	if (isdead(philo, &philo->death_mutex) != ALIVE)
 	{
-		use_fork(philo, DEPOSIT);
-		return (1);
+		use_fork(philo, DEPOSIT, REUSED);
+		return (DEAD);
 	}
 	pthread_mutex_lock(last_meal_mutex);
 	philo->last_meal = timestamp;
@@ -77,6 +84,6 @@ t_state	eat(t_philo *philo, t_data data)
 	pthread_mutex_unlock(last_meal_mutex);
 	print_log(timestamp, philo->num, EAT, philo->printf_mutex);
 	status = ft_usleep(data.time_to_eat * 1000, philo);
-	use_fork(philo, DEPOSIT);
+	use_fork(philo, DEPOSIT, REUSED);
 	return (status);
 }

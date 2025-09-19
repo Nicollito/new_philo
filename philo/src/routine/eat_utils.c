@@ -6,20 +6,20 @@
 /*   By: nimadela <nimadela@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 16:41:37 by nimadela          #+#    #+#             */
-/*   Updated: 2025/09/17 17:20:57 by nimadela         ###   ########.fr       */
+/*   Updated: 2025/09/19 12:13:16 by nimadela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "routine.h"
 
-int	action_on_fork(int *fork, t_action action)
+static int	action_on_fork(int *fork, t_action action)
 {
 	if (action == TAKE && *fork)
 	{
 		*fork = 0;
 		return (1);
 	}
-	if (action == DEPOSIT && !*fork)
+	if (action == DEPOSIT)
 	{
 		*fork = 1;
 		return (1);
@@ -27,7 +27,7 @@ int	action_on_fork(int *fork, t_action action)
 	return (0);
 }
 
-void	take_first_fork(int *fork, pthread_mutex_t *mutex, t_action action)
+static void	take_first_fork(int *fork, pthread_mutex_t *mutex, t_action action)
 {
 	while (1)
 	{
@@ -39,7 +39,7 @@ void	take_first_fork(int *fork, pthread_mutex_t *mutex, t_action action)
 	pthread_mutex_unlock(mutex);
 }
 
-int	take_second_fork(int *fork, pthread_mutex_t *mutex, t_action action)
+static int	take_second_fork(int *fork, pthread_mutex_t *mutex, t_action action)
 {
 	int	status;
 
@@ -59,8 +59,12 @@ void	hunger_priority(t_philo *philo)
 	pthread_mutex_lock(&philo->last_meal_mutex);
 	time_since_meal = get_timestamp() - philo->last_meal;
 	pthread_mutex_unlock(&philo->last_meal_mutex);
+	if (time_since_meal < 5)
+		return ;
 	hunger_ration = (float)time_since_meal / philo->data->time_to_die;
-	max_wait = 500;
+	max_wait = philo->data->time_to_die * 319;
+	if (philo->data->time_to_die > 1000)
+		max_wait = 1000 * 319;
 	wait_time = max_wait * (1.0 - hunger_ration);
 	if (wait_time < 0)
 		wait_time = 0;
@@ -76,18 +80,18 @@ int	left_handed_philo(t_philo *philo, t_action action)
 
 	if (philo->num == philo->data->num_of_philo)
 	{
+		take_first_fork(philo->next_fork, philo->next_fork_mutex, action);
+		status = take_second_fork(philo->fork, philo->fork_mutex, action);
+		if (!status)
+			take_first_fork(philo->next_fork, philo->next_fork_mutex, DEPOSIT);
+	}
+	else
+	{
 		take_first_fork(philo->fork, philo->fork_mutex, action);
 		status = take_second_fork(philo->next_fork, philo->next_fork_mutex,
 				action);
 		if (!status)
 			take_first_fork(philo->fork, philo->fork_mutex, DEPOSIT);
-	}
-	else
-	{
-		take_first_fork(philo->next_fork, philo->next_fork_mutex, action);
-		status = take_second_fork(philo->fork, philo->fork_mutex, action);
-		if (!status)
-			take_first_fork(philo->next_fork, philo->next_fork_mutex, DEPOSIT);
 	}
 	return (status);
 }

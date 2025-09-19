@@ -6,7 +6,7 @@
 /*   By: nimadela <nimadela@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 14:06:29 by nimadela          #+#    #+#             */
-/*   Updated: 2025/09/17 17:23:23 by nimadela         ###   ########.fr       */
+/*   Updated: 2025/09/18 16:16:07 by nimadela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,15 +27,21 @@ typedef enum action
 	DEPOSIT,
 }	t_action;
 
+typedef enum call
+{
+	INIT,
+	REUSED,
+}	t_call;
+
 // actions.c
 
-int		ft_usleep(unsigned int us, t_philo *philo);
+t_state	ft_usleep(unsigned int us, t_philo *philo);
 
 t_state	ft_sleep(t_philo *philo, t_data data);
 
 void	think(t_philo *philo);
 
-t_state	eat(t_philo *philo, t_data data);
+t_state	eat(t_philo *philo, t_data data, t_call call);
 
 // mutex.c
 
