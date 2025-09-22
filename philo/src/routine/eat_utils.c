@@ -27,19 +27,28 @@ static int	action_on_fork(int *fork, t_action action)
 	return (0);
 }
 
-static void	take_first_fork(int *fork, pthread_mutex_t *mutex, t_action action)
+static t_state	take_fork(int *fork, pthread_mutex_t *mutex, t_action action,
+	t_philo *philo)
 {
+	t_state state;
+
 	while (1)
 	{
 		pthread_mutex_lock(mutex);
 		if (action_on_fork(fork, action))
 			break ;
 		pthread_mutex_unlock(mutex);
+		state = isdead(philo, &philo->death_mutex);
+		if (state != ALIVE)
+			return (state);
 	}
 	pthread_mutex_unlock(mutex);
+	if (action == TAKE)
+		print_log(get_timestamp(), philo->num, FORK, philo->printf_mutex);
+	return (ALIVE);
 }
 
-static int	take_second_fork(int *fork, pthread_mutex_t *mutex, t_action action)
+/* static int	take_second_fork(int *fork, pthread_mutex_t *mutex, t_action action)
 {
 	int	status;
 
@@ -72,26 +81,33 @@ void	hunger_priority(t_philo *philo)
 		wait_time = max_wait;
 	if (wait_time > 0)
 		ft_usleep(wait_time, NULL);
-}
+} */
 
-int	left_handed_philo(t_philo *philo, t_action action)
+t_state	left_handed_philo(t_philo *philo, t_action action)
 {
-	int	status;
+	t_state state;
 
 	if (philo->num == philo->data->num_of_philo)
 	{
-		take_first_fork(philo->next_fork, philo->next_fork_mutex, action);
-		status = take_second_fork(philo->fork, philo->fork_mutex, action);
-		if (!status)
-			take_first_fork(philo->next_fork, philo->next_fork_mutex, DEPOSIT);
+		take_fork(philo->next_fork, philo->next_fork_mutex, action, philo);
+		state = take_fork(philo->fork, philo->fork_mutex, action, philo);
+		if (state != ALIVE)
+		{
+			take_fork(philo->fork, philo->fork_mutex, DEPOSIT, philo);
+			take_fork(philo->next_fork, philo->next_fork_mutex, DEPOSIT, philo);
+			return (state);
+		}
 	}
 	else
 	{
-		take_first_fork(philo->fork, philo->fork_mutex, action);
-		status = take_second_fork(philo->next_fork, philo->next_fork_mutex,
-				action);
-		if (!status)
-			take_first_fork(philo->fork, philo->fork_mutex, DEPOSIT);
+		take_fork(philo->fork, philo->fork_mutex, action, philo);
+		state = take_fork(philo->next_fork, philo->next_fork_mutex, action, philo);
+		if (state != ALIVE)
+		{
+			take_fork(philo->next_fork, philo->next_fork_mutex, DEPOSIT, philo);
+			take_fork(philo->fork, philo->fork_mutex, DEPOSIT, philo);
+			return (state);
+		}
 	}
-	return (status);
+	return (ALIVE);
 }

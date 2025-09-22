@@ -39,9 +39,9 @@ t_state	ft_usleep(unsigned int us, t_philo *philo);
 
 t_state	ft_sleep(t_philo *philo, t_data data);
 
-void	think(t_philo *philo);
+void	think(t_philo *philo, t_data data);
 
-t_state	eat(t_philo *philo, t_data data, t_call call);
+t_state	eat(t_philo *philo, t_data data);
 
 // mutex.c
 

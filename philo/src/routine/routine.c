@@ -41,7 +41,7 @@ t_state	ft_usleep(unsigned int us, t_philo *philo)
 			+ (current.tv_usec - start.tv_usec);
 		if ((long)(us - elapsed_us) <= 0)
 			break ;
-		usleep(5);
+		usleep(100);
 	}
 	return (ALIVE);
 }
@@ -61,23 +61,22 @@ static void	routine_one(t_philo *philo)
 
 static void	loop(t_philo *philo, t_data data, pthread_mutex_t *death_mutex)
 {
-	t_call	call;
-
-	call = INIT;
+	if (philo->num % 2 == 0)
+		think(philo, data);
 	while (1)
 	{
 		if (isdead(philo, death_mutex) != ALIVE)
 			return ;
-		think(philo);
-		if (isdead(philo, death_mutex) != ALIVE)
-			return ;
-		if (eat(philo, data, call) != ALIVE)
+		if (eat(philo, data) != ALIVE)
 			return ;
 		if (isdead(philo, death_mutex) != ALIVE)
 			return ;
 		if (ft_sleep(philo, data) != ALIVE)
 			return ;
-		call = REUSED;
+		if (isdead(philo, death_mutex) != ALIVE)
+			return ;
+		think(philo, data);
+		usleep(10);
 	}
 }
 
