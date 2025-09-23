@@ -46,19 +46,6 @@ t_state	ft_usleep(unsigned int us, t_philo *philo)
 	return (ALIVE);
 }
 
-static void	routine_one(t_philo *philo)
-{
-	pthread_mutex_lock(philo->fork_mutex);
-	*philo->fork = 0;
-	pthread_mutex_unlock(philo->fork_mutex);
-	print_log(get_timestamp(), philo->num, FORK, philo->printf_mutex);
-	while (1)
-	{
-		if (isdead(philo, &philo->death_mutex) != ALIVE)
-			return ;
-	}
-}
-
 static void	loop(t_philo *philo, t_data data, pthread_mutex_t *death_mutex)
 {
 	if (philo->num % 2 == 0)
@@ -89,11 +76,6 @@ void	*routine(void *philo_ptr)
 	philo = (t_philo *)philo_ptr;
 	data = *philo->data;
 	death_mutex = &philo->death_mutex;
-	if (data.num_of_philo == 1)
-	{
-		routine_one(philo);
-		return (NULL);
-	}
 	loop(philo, data, death_mutex);
 	return (NULL);
 }
