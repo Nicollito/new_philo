@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "routine.h"
+#include <unistd.h>
 
 static int	action_on_fork(int *fork, t_action action)
 {
@@ -41,6 +42,7 @@ static t_state	take_fork(int *fork, pthread_mutex_t *mutex, t_action action,
 		state = isdead(philo, &philo->death_mutex);
 		if (state != ALIVE)
 			return (state);
+		usleep(600);
 	}
 	pthread_mutex_unlock(mutex);
 	if (action == TAKE)
@@ -48,40 +50,15 @@ static t_state	take_fork(int *fork, pthread_mutex_t *mutex, t_action action,
 	return (ALIVE);
 }
 
-/* static int	take_second_fork(int *fork, pthread_mutex_t *mutex, t_action action)
+void	deposit_fork(t_philo *philo)
 {
-	int	status;
-
-	pthread_mutex_lock(mutex);
-	status = action_on_fork(fork, action);
-	pthread_mutex_unlock(mutex);
-	return (status);
+	pthread_mutex_lock(philo->fork_mutex);
+	action_on_fork(philo->fork, DEPOSIT);
+	pthread_mutex_unlock(philo->fork_mutex);
+	pthread_mutex_lock(philo->next_fork_mutex);
+	action_on_fork(philo->next_fork, DEPOSIT);
+	pthread_mutex_unlock(philo->next_fork_mutex);
 }
-
-void	hunger_priority(t_philo *philo)
-{
-	int		time_since_meal;
-	int		max_wait;
-	int		wait_time;
-	float	hunger_ration;
-
-	pthread_mutex_lock(&philo->last_meal_mutex);
-	time_since_meal = get_timestamp() - philo->last_meal;
-	pthread_mutex_unlock(&philo->last_meal_mutex);
-	if (time_since_meal < 5)
-		return ;
-	hunger_ration = (float)time_since_meal / philo->data->time_to_die;
-	max_wait = philo->data->time_to_die * 319;
-	if (philo->data->time_to_die > 1000)
-		max_wait = 1000 * 319;
-	wait_time = max_wait * (1.0 - hunger_ration);
-	if (wait_time < 0)
-		wait_time = 0;
-	if (wait_time > max_wait)
-		wait_time = max_wait;
-	if (wait_time > 0)
-		ft_usleep(wait_time, NULL);
-} */
 
 t_state	left_handed_philo(t_philo *philo, t_action action)
 {

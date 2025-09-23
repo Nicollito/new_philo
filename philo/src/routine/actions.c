@@ -22,11 +22,13 @@ void	print_log(int timestamp, int philo, char *msg, pthread_mutex_t *mutex)
 
 t_state	ft_sleep(t_philo *philo, t_data data)
 {
-	int	timestamp;
+	int		timestamp;
+	t_state	state;
 
 	timestamp = get_timestamp();
 	print_log(timestamp, philo->num, SLEEP, philo->printf_mutex);
-	return (ft_usleep(data.time_to_sleep * 1000, philo));
+	state = ft_usleep(data.time_to_sleep * 1000, philo);
+	return (state);
 }
 
 void	think(t_philo *philo, t_data data)
@@ -70,6 +72,6 @@ t_state	eat(t_philo *philo, t_data data)
 	pthread_mutex_unlock(last_meal_mutex);
 	print_log(timestamp, philo->num, EAT, philo->printf_mutex);
 	status = ft_usleep(data.time_to_eat * 1000, philo);
-	use_fork(philo, DEPOSIT);
+	deposit_fork(philo);
 	return (status);
 }

@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "routine.h"
+#include <unistd.h>
 
 void	set_state_philo(t_philo *philo, t_state current)
 {
@@ -22,7 +23,7 @@ void	set_state_philo(t_philo *philo, t_state current)
 		pthread_mutex_lock(&philo[i].death_mutex);
 		philo[i].state = current;
 		pthread_mutex_unlock(&philo[i].death_mutex);
-		i++;
+		++i;
 	}
 }
 
@@ -74,7 +75,7 @@ void	look_for_die(t_data *data, t_philo *philo)
 		i++;
 		if (i == data->num_of_philo)
 			i = 0;
-		ft_usleep(50, NULL);
+		usleep(600);
 	}
 	ft_usleep(1000, NULL);
 	if (state == DEAD)

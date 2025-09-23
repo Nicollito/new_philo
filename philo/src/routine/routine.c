@@ -41,7 +41,7 @@ t_state	ft_usleep(unsigned int us, t_philo *philo)
 			+ (current.tv_usec - start.tv_usec);
 		if ((long)(us - elapsed_us) <= 0)
 			break ;
-		usleep(100);
+		usleep(700);
 	}
 	return (ALIVE);
 }
@@ -76,7 +76,7 @@ static void	loop(t_philo *philo, t_data data, pthread_mutex_t *death_mutex)
 		if (isdead(philo, death_mutex) != ALIVE)
 			return ;
 		think(philo, data);
-		usleep(10);
+		usleep(600);
 	}
 }
 

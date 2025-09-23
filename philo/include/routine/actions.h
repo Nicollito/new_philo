@@ -17,7 +17,7 @@
 
 // eat_utils.c
 
-void	hunger_priority(t_philo *philo);
+void	deposit_fork(t_philo *philo);
 
 int		left_handed_philo(t_philo *philo, t_action action);
 
