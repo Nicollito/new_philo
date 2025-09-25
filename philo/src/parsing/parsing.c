@@ -61,7 +61,7 @@ static int	fill_data(int ac, char **av, t_data *data)
 	return (0);
 }
 
-int	parsing(int ac, char **av, t_data *data)
+static int	pars_args(int ac, char **av)
 {
 	if (ac != 5 && ac != 6)
 	{
@@ -75,6 +75,13 @@ arguments.", 2);
 			"Error: Invalid argument. Only positive numbers are allowed.", 2);
 		return (1);
 	}
+	return (0);
+}
+
+int	parsing(int ac, char **av, t_data *data)
+{
+	if (pars_args(ac, av))
+		return (1);
 	if (fill_data(ac, av, data))
 	{
 		ft_putendl("Error: Arithmetic overflow detected. Input value is too \
@@ -84,6 +91,12 @@ large for 32-bit integer.", 2);
 	if (data->num_of_philo == 0)
 	{
 		ft_putendl("Error: Number of philosophers must be at least 1.", 2);
+		return (1);
+	}
+	if (data->num_of_eat == 0)
+	{
+		ft_putendl("Error: Simulation cannot start with 0 meals per philosopher.\
+ Must be at least 1.", 2);
 		return (1);
 	}
 	return (0);
