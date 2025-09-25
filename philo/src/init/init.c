@@ -58,7 +58,7 @@ t_philo	*init_philo(t_data *data)
 	{
 		init_int(i, fork, data, philo);
 		init_mutex(i, &mutex, philo);
-		i++;
+		++i;
 	}
 	return (philo);
 }

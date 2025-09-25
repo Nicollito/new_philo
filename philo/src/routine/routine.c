@@ -50,6 +50,8 @@ static void	loop(t_philo *philo, t_data data, pthread_mutex_t *death_mutex)
 {
 	if (philo->num % 2 == 0)
 		think(philo, data);
+	else
+		print_log(get_timestamp(), philo->num, THINK, philo->printf_mutex);
 	while (1)
 	{
 		if (isdead(philo, death_mutex) != ALIVE)

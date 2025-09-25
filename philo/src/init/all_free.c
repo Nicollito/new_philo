@@ -13,10 +13,10 @@
 #include "philo.h"
 #include <stdlib.h>
 
-static void	destroy_mutex_loop(t_philo philo)
+static void	destroy_mutex_loop(int i, t_philo *philo)
 {
-	pthread_mutex_destroy(&philo.last_meal_mutex);
-	pthread_mutex_destroy(&philo.death_mutex);
+	pthread_mutex_destroy(&philo[i].last_meal_mutex);
+	pthread_mutex_destroy(&philo[i].death_mutex);
 }
 
 void	free_philo(t_philo *philo)
@@ -31,7 +31,7 @@ void	free_philo(t_philo *philo)
 	free(philo->fork_mutex);
 	while (++i < philo->data->num_of_philo)
 	{
-		destroy_mutex_loop(philo[i]);
+		destroy_mutex_loop(i, philo);
 	}
 	free(philo);
 }
