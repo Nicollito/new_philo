@@ -31,7 +31,7 @@ static int	action_on_fork(int *fork, t_action action)
 static t_state	take_fork(int *fork, pthread_mutex_t *mutex, t_action action,
 	t_philo *philo)
 {
-	t_state state;
+	t_state	state;
 
 	while (1)
 	{
@@ -60,14 +60,14 @@ void	deposit_fork(t_philo *philo)
 	pthread_mutex_unlock(philo->next_fork_mutex);
 }
 
-t_state	left_handed_philo(t_philo *philo, t_action action)
+t_state	left_handed_philo(t_philo *philo, t_action act)
 {
-	t_state state;
+	t_state	state;
 
 	if (philo->num == philo->data->num_of_philo)
 	{
-		take_fork(philo->next_fork, philo->next_fork_mutex, action, philo);
-		state = take_fork(philo->fork, philo->fork_mutex, action, philo);
+		take_fork(philo->next_fork, philo->next_fork_mutex, act, philo);
+		state = take_fork(philo->fork, philo->fork_mutex, act, philo);
 		if (state != ALIVE)
 		{
 			take_fork(philo->fork, philo->fork_mutex, DEPOSIT, philo);
@@ -77,8 +77,8 @@ t_state	left_handed_philo(t_philo *philo, t_action action)
 	}
 	else
 	{
-		take_fork(philo->fork, philo->fork_mutex, action, philo);
-		state = take_fork(philo->next_fork, philo->next_fork_mutex, action, philo);
+		take_fork(philo->fork, philo->fork_mutex, act, philo);
+		state = take_fork(philo->next_fork, philo->next_fork_mutex, act, philo);
 		if (state != ALIVE)
 		{
 			take_fork(philo->next_fork, philo->next_fork_mutex, DEPOSIT, philo);

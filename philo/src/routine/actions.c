@@ -38,7 +38,8 @@ void	think(t_philo *philo, t_data data)
 	(void)data;
 	timestamp = get_timestamp();
 	print_log(timestamp, philo->num, THINK, philo->printf_mutex);
-	if (get_timestamp() - philo->last_meal + data.time_to_eat < data.time_to_die)
+	if (get_timestamp() - philo->last_meal + data.time_to_eat
+		< data.time_to_die)
 		ft_usleep(philo->data->time_to_eat * 1000, NULL);
 }
 

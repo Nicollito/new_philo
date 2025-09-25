@@ -65,22 +65,25 @@ int	parsing(int ac, char **av, t_data *data)
 {
 	if (ac != 5 && ac != 6)
 	{
-		ft_putendl("put 4 or 5 args", 2);
+		ft_putendl("Error: Invalid number of arguments. Expected 4 or 5	\
+arguments.", 2);
 		return (1);
 	}
 	if (check_is_num(av))
 	{
-		ft_putendl("only posisitve num are able", 2);
+		ft_putendl(
+			"Error: Invalid argument. Only positive numbers are allowed.", 2);
 		return (1);
 	}
 	if (fill_data(ac, av, data))
 	{
-		ft_putendl("number too big", 2);
+		ft_putendl("Error: Arithmetic overflow detected. Input value is too \
+large for 32-bit integer.", 2);
 		return (1);
 	}
 	if (data->num_of_philo == 0)
 	{
-		ft_putendl("need at least 1 philo", 2);
+		ft_putendl("Error: Number of philosophers must be at least 1.", 2);
 		return (1);
 	}
 	return (0);
