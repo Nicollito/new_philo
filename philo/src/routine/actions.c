@@ -35,20 +35,13 @@ void	think(t_philo *philo, t_data data)
 {
 	int	timestamp;
 
-	(void)data;
+	if (isdead(philo, &philo->death_mutex))
+		return ;
 	timestamp = get_timestamp();
 	print_log(timestamp, philo->num, THINK, philo->printf_mutex);
 	if (get_timestamp() - philo->last_meal + data.time_to_eat
 		< data.time_to_die)
 		ft_usleep(philo->data->time_to_eat * 1000, NULL);
-}
-
-static t_state	use_fork(t_philo *philo, t_action action)
-{
-	t_state	state;
-
-	state = left_handed_philo(philo, action);
-	return (state);
 }
 
 t_state	eat(t_philo *philo, t_data data)
@@ -58,12 +51,12 @@ t_state	eat(t_philo *philo, t_data data)
 	pthread_mutex_t	*last_meal_mutex;
 
 	last_meal_mutex = &philo->last_meal_mutex;
-	if (use_fork(philo, TAKE) != ALIVE)
+	if (left_handed_philo(philo) != ALIVE)
 		return (DEAD);
 	timestamp = get_timestamp();
 	if (isdead(philo, &philo->death_mutex) != ALIVE)
 	{
-		use_fork(philo, DEPOSIT);
+		deposit_fork(philo);
 		return (DEAD);
 	}
 	pthread_mutex_lock(last_meal_mutex);

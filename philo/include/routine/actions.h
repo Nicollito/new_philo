@@ -19,6 +19,6 @@
 
 void	deposit_fork(t_philo *philo);
 
-int		left_handed_philo(t_philo *philo, t_action action);
+t_state	left_handed_philo(t_philo *philo);
 
 #endif
