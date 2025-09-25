@@ -26,8 +26,8 @@ static int	init_threads(t_data *data, t_philo *philo)
 			set_state_philo(philo, DEAD);
 			if (!i)
 				return (0);
-			while (--i)
-				pthread_join(philo[i].threads, NULL);
+			while (i)
+				pthread_join(philo[--i].threads, NULL);
 			return (0);
 		}
 	}
