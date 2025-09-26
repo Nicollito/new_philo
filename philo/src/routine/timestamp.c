@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   timestamp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nimadela <nimadela@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nimadela <nimadela@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 14:11:10 by nimadela          #+#    #+#             */
-/*   Updated: 2025/09/10 10:50:57 by nimadela         ###   ########.fr       */
+/*   Updated: 2025/09/26 13:03:59 by nimadela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,3 +30,8 @@ int	get_timestamp(void)
 		- ((start.tv_sec * 1000) + (start.tv_usec / 1000));
 	return (res);
 }
+
+/* int is_time_to_start(t_philo philo)
+{
+	
+} */

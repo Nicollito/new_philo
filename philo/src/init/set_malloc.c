@@ -6,7 +6,7 @@
 /*   By: nimadela <nimadela@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 13:07:12 by nimadela          #+#    #+#             */
-/*   Updated: 2025/09/19 11:44:47 by nimadela         ###   ########.fr       */
+/*   Updated: 2025/09/26 18:11:58 by nimadela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,11 @@ int	malloc_mutex(t_mutex *mutex, t_data *data)
 		free(mutex->fork);
 		return (1);
 	}
-	pthread_mutex_init(mutex->printf, NULL);
+	if (pthread_mutex_init(mutex->printf, NULL))
+	{
+		free(mutex->fork);
+		free(mutex->printf);
+		return (1);
+	}
 	return (0);
 }

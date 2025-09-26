@@ -6,7 +6,7 @@
 /*   By: nimadela <nimadela@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 11:30:29 by nimadela          #+#    #+#             */
-/*   Updated: 2025/09/19 11:16:04 by nimadela         ###   ########.fr       */
+/*   Updated: 2025/09/26 16:55:06 by nimadela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,25 @@ t_state	ft_usleep(unsigned int us, t_philo *philo)
 	return (ALIVE);
 }
 
+static t_state	waiting_start(t_philo *philo, t_start *start)
+{
+	pthread_mutex_lock(&start->ready_mutex);
+	start->ready_count++;
+	pthread_mutex_unlock(&start->ready_mutex);
+	while (1)
+	{
+		pthread_mutex_lock(&start->start_mutex);
+		if (start->start == READY)
+			break ;
+		pthread_mutex_unlock(&start->start_mutex);
+		if (isdead(philo, &philo->death_mutex) != ALIVE)
+			return (DEAD);
+		usleep(700);
+	}
+	pthread_mutex_unlock(&start->start_mutex);
+	return (ALIVE);
+}
+
 static void	loop(t_philo *philo, t_data data, pthread_mutex_t *death_mutex)
 {
 	if (philo->num % 2 == 0)
@@ -71,13 +90,11 @@ static void	loop(t_philo *philo, t_data data, pthread_mutex_t *death_mutex)
 
 void	*routine(void *philo_ptr)
 {
-	t_data			data;
 	t_philo			*philo;
-	pthread_mutex_t	*death_mutex;
 
 	philo = (t_philo *)philo_ptr;
-	data = *philo->data;
-	death_mutex = &philo->death_mutex;
-	loop(philo, data, death_mutex);
+	if (waiting_start(philo, philo->data->start) != ALIVE)
+		return (NULL);
+	loop(philo, *philo->data, &philo->death_mutex);
 	return (NULL);
 }

@@ -6,7 +6,7 @@
 /*   By: nimadela <nimadela@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 13:44:30 by nimadela          #+#    #+#             */
-/*   Updated: 2025/09/17 17:20:39 by nimadela         ###   ########.fr       */
+/*   Updated: 2025/09/26 18:09:00 by nimadela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ static int	pars_args(int ac, char **av)
 {
 	if (ac != 5 && ac != 6)
 	{
-		ft_putendl("Error: Invalid number of arguments. Expected 4 or 5	\
+		ft_putendl("Error: Invalid number of arguments. Expected 4 or 5 \
 arguments.", 2);
 		return (1);
 	}
@@ -78,7 +78,22 @@ arguments.", 2);
 	return (0);
 }
 
-int	parsing(int ac, char **av, t_data *data)
+static int	init_data_start(t_data *data, t_start *start)
+{
+	data->start = start;
+	start->ready_count = 0;
+	start->start = WAIT;
+	if (pthread_mutex_init(&data->start->ready_mutex, NULL))
+		return (1);
+	if (pthread_mutex_init(&data->start->start_mutex, NULL))
+	{
+		pthread_mutex_destroy(&data->start->ready_mutex);
+		return (1);
+	}
+	return (0);
+}
+
+int	parsing(int ac, char **av, t_data *data, t_start *start)
 {
 	if (pars_args(ac, av))
 		return (1);
@@ -86,6 +101,11 @@ int	parsing(int ac, char **av, t_data *data)
 	{
 		ft_putendl("Error: Arithmetic overflow detected. Input value is too \
 large for 32-bit integer.", 2);
+		return (1);
+	}
+	if (init_data_start(data, start))
+	{
+		ft_putendl("Error: Failed to initialize mutex", 2);
 		return (1);
 	}
 	if (data->num_of_philo == 0)
