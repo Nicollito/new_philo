@@ -6,7 +6,7 @@
 /*   By: nimadela <nimadela@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 13:19:09 by nimadela          #+#    #+#             */
-/*   Updated: 2025/09/26 16:51:14 by nimadela         ###   ########.fr       */
+/*   Updated: 2025/09/28 17:15:52 by nimadela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,9 @@ int	main(int ac, char **av)
 {
 	int		status;
 	t_data	data;
-	t_start	start;
 	t_philo	*philo;
 
-	if (parsing(ac, av, &data, &start))
+	if (parsing(ac, av, &data))
 		return (1);
 	philo = init_philo(&data);
 	if (!philo)

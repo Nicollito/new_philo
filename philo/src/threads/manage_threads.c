@@ -6,7 +6,7 @@
 /*   By: nimadela <nimadela@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 15:43:17 by nimadela          #+#    #+#             */
-/*   Updated: 2025/09/26 18:48:06 by nimadela         ###   ########.fr       */
+/*   Updated: 2025/09/28 17:21:46 by nimadela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include "parsing.h"
 #include <unistd.h>
 
-static void	set_threads_ready(t_data *data, t_start *start)
+/* static void	set_threads_ready(t_data *data, t_start *start)
 {
 	int	ready;
 
@@ -32,15 +32,16 @@ static void	set_threads_ready(t_data *data, t_start *start)
 			pthread_mutex_unlock(&start->start_mutex);
 			break ;
 		}
-		usleep(700);
+		usleep(100);
 	}
-}
+} */
 
 static int	init_threads(t_data *data, t_philo *philo)
 {
 	int			i;
 
 	i = -1;
+	get_timestamp();
 	while (++i < data->num_of_philo)
 	{
 		if (pthread_create(&philo[i].threads, NULL, routine, &philo[i]))
@@ -53,7 +54,6 @@ static int	init_threads(t_data *data, t_philo *philo)
 			return (1);
 		}
 	}
-	set_threads_ready(data, data->start);
 	return (0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: nimadela <nimadela@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 12:58:47 by nimadela          #+#    #+#             */
-/*   Updated: 2025/09/26 13:50:53 by nimadela         ###   ########.fr       */
+/*   Updated: 2025/09/28 14:22:20 by nimadela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ typedef struct mutex
 {
 	pthread_mutex_t	*fork;
 	pthread_mutex_t	*printf;
-	pthread_mutex_t	*death;
 }					t_mutex;
 
 // set_malloc.c

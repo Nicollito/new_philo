@@ -6,7 +6,7 @@
 /*   By: nimadela <nimadela@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 10:21:56 by nimadela          #+#    #+#             */
-/*   Updated: 2025/09/26 18:32:18 by nimadela         ###   ########.fr       */
+/*   Updated: 2025/09/28 14:24:35 by nimadela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,8 @@ static int	init_loop(t_philo *philo, t_data *data, t_mutex *mutex, int *fork)
 			ft_putendl("Error: Failed to initialize mutex", 2);
 			while (i)
 				destroy_philo_mutex(&philo[--i]);
+			free(mutex->fork);
+			free(mutex->printf);
 			free(fork);
 			free(philo);
 			return (1);

@@ -6,7 +6,7 @@
 /*   By: nimadela <nimadela@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 13:39:45 by nimadela          #+#    #+#             */
-/*   Updated: 2025/09/26 16:49:23 by nimadela         ###   ########.fr       */
+/*   Updated: 2025/09/28 17:14:55 by nimadela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,17 +20,7 @@ typedef enum state
 	ALIVE,
 	DEAD,
 	FED,
-	WAIT,
-	READY,
 }	t_state;
-
-typedef struct start
-{
-	int				ready_count;
-	t_state			start;
-	pthread_mutex_t	ready_mutex;
-	pthread_mutex_t	start_mutex;
-}					t_start;
 
 typedef struct data
 {
@@ -39,7 +29,6 @@ typedef struct data
 	int				time_to_eat;
 	int				time_to_sleep;
 	int				num_of_eat;
-	t_start			*start;
 }					t_data;
 
 typedef struct philo
@@ -73,7 +62,7 @@ t_philo	*init_philo(t_data *data);
 
 // parsing.c
 
-int		parsing(int ac, char **av, t_data *data, t_start *start);
+int		parsing(int ac, char **av, t_data *data);
 
 /* ---------------routine---------------- */
 

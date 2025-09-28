@@ -6,11 +6,12 @@
 /*   By: nimadela <nimadela@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 13:07:12 by nimadela          #+#    #+#             */
-/*   Updated: 2025/09/26 18:11:58 by nimadela         ###   ########.fr       */
+/*   Updated: 2025/09/28 15:05:04 by nimadela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "init.h"
+#include "parsing.h"
 #include <stdlib.h>
 #include <string.h>
 
@@ -43,6 +44,7 @@ int	malloc_mutex(t_mutex *mutex, t_data *data)
 	}
 	if (pthread_mutex_init(mutex->printf, NULL))
 	{
+		ft_putendl("Error: Failed to initialize mutex", 2);
 		free(mutex->fork);
 		free(mutex->printf);
 		return (1);
