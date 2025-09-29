@@ -15,27 +15,6 @@
 #include "parsing.h"
 #include <unistd.h>
 
-/* static void	set_threads_ready(t_data *data, t_start *start)
-{
-	int	ready;
-
-	while (1)
-	{
-		pthread_mutex_lock(&start->ready_mutex);
-		ready = start->ready_count;
-		pthread_mutex_unlock(&start->ready_mutex);
-		if (ready == data->num_of_philo)
-		{
-			pthread_mutex_lock(&start->start_mutex);
-			get_timestamp();
-			start->start = READY;
-			pthread_mutex_unlock(&start->start_mutex);
-			break ;
-		}
-		usleep(100);
-	}
-} */
-
 static int	init_threads(t_data *data, t_philo *philo)
 {
 	int			i;
@@ -47,10 +26,10 @@ static int	init_threads(t_data *data, t_philo *philo)
 		if (pthread_create(&philo[i].threads, NULL, routine, &philo[i]))
 		{
 			set_state_philo(philo, DEAD);
-			ft_putendl("Error: Failed to create thread (pthread_create returned\
- an error).", 2);
 			while (i)
 				pthread_join(philo[--i].threads, NULL);
+			ft_putendl("Error: Failed to create thread (pthread_create returned\
+ an error).", 2);
 			return (1);
 		}
 	}

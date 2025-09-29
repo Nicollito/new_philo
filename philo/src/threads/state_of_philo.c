@@ -77,7 +77,7 @@ void	look_for_die(t_data *data, t_philo *philo)
 			i = 0;
 		usleep(600);
 	}
-	ft_usleep(data->num_of_philo * 10, NULL);
+	ft_usleep(data->num_of_philo, NULL);
 	if (state == DEAD)
 		print_log(get_timestamp(), philo[i].num, DIE, philo->printf_mutex);
 }
